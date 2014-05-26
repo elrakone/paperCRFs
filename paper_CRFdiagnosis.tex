@@ -17,10 +17,11 @@
 \usepackage{subcaption}
 \usepackage{wrapfig}
 
-\title{\LARGE \bf Using CRFs for Rover Locomotion Diagnosis}
+\title{\LARGE \bf Using Conditional Random Fields for Rover Locomotion Diagnosis}
 
-\author{Christian Vassallo, Karthick Munirathinam (???), Sophie Sakka, Christine Chevallereau 
-\thanks{This work was supported by IRCCyN Robotics Lab and WILLPOWER scholarship}% <-this % stops a space
+\author{Nemanja Raki\'{c}evi\'{c}, Alexandre Ravet, Simon Lacroix \\
+\tt\small \{nrakicev,aravet,slacroix\}@laas.fr
+\thanks{This work was supported by RIS Lab blabla}% <-this % stops a space
 \thanks{christian.vassallo@laas.fr, K. Munirathinam, S. Sakka and C. Chevallereau are with IRCCyN, Nantes, France
         {\tt\small karthick.munirathinam@irccryn.ec-nantes.fr sophie.sakka@irccryn.ec-nantes.fr christine.chevallereau@irccryn.ec-nantes.fr}}%
 \thanks{Sophie Sakka is also with University of Poitiers, France}%
@@ -35,166 +36,74 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-To write.\par
+To write.
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\par
 \end{abstract}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
-
-To write. \par
+To write.
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. \par
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Equipment and Human Motion}
+\section{Context / motivations}
 
-In our experiments the human performances are recorded using the marker-based capture system ART - Advance Realtime Tracking system, supplied by DTrack2 and ART-Human software to elaborate the actor movements. The system consists of a hybrid suit of 17 targets with 6 degrees of freedom relative to left/right foot, shin, thigh, shoulder, upper-arm, forearm, hand, head, hip, back and torso.
-To record the human movements a set of 8 IR cameras are located in the eight corners of the 3D rectangular work space. The system is able to capture information with different frequencies but we choose to set it at 50 Hz in order to match the motion frequency of the humanoid robot NAO.
-The ART software DTrack2 acquires the 2D information of each IR camera and provides the transformation matrices relative to the different local frames attached to the body parts. The origin of each local frame is set to the center of gravity of all markers attached to the relative limb. The axes of the body coordinate system are parallels to the axes of the room coordinate system in the beginning
-of the body calibration \cite{GmbH2012}.
-ART-Human software uses the information provided by DTrack2 to design each segment limb automatically. During the calibration, it estimates the position and orientation of the actor articulation frames and the limbs dimension are computed as an offset.\\
-In the first part we considered simple motion as left kick, starting and ending in double support, and waving motion in double support.
-Since the robot and human kinematics are different, during the imitation the balance could be not preserved and the robot may fail down.
+what is the problem (could be made short here), and why it is interesting to solve it?
 
-\section{Motion Conversion}
-The main problem arisen during human to humanoid motion conversion is to find a good compromise between the fidelity and the feasibility of the imitation. The several differences, especially from kinematics point of view, do not allow to obtain a perfect conversion, especially preserving the human style.
-The goal is then to capture human movements and observe the robot imitator performing motions apparently identical to the original ones.
-In despite of other related researches, in which the conversion algorithm works in joint space, we consider only the Cartesian aspects of the actor movements because we suppose that in this way some particular features, like the human style, are preserved.
-Considering the data provided by DTrack2 software, the idea is to define some \textit{Virtual Markers} on the humanoid robot NAO such that during the movements their position and orientation evolution match the \textit{Real Markers} evolution equipped by the actor.
-\subsection{Mathematical Formulation of the Problem}
-In order to realize our idea, we formulate the following optimization problem in which the cost function is defined as a difference between the Real Marker $\mathit{^{0}T_{m_i}}(t)$ attached to the limb $i^{\,th}$ measured by MoCap and the relative Virtual Marker $\mathit{^{0}T_{V_i}}(q)$ computed recovering the joint angles of the robot. Whole body motion is considered for each instant of time, such that:
-\begin{equation}
-\sum^{T}_{t=0} \, \sum^{M}_{i=1} \, || \, ^{0}T_{m_i}(t) - ^{0}T_{V_i}(q) ||_2
-\label{eq:minimizationReal-Virtual-Marker}
-\end{equation}
-In the following paper we will represents the objective function in equation \eqref{eq:minimizationReal-Virtual-Marker} as a difference between two transformation matrices.
-However, the computation is done in more than one step, following the algorithm described by W. Khalil in \cite{Khalil2002} to solve the inverse geometric problem: firstly, we compute the error vector in position $\mathit{dX_{p_i}}$ and orientation ${\mathit{dX_{r_i}}}$, representing the difference between the desired configuration $^{0}T_{m_i}(t)$ and the current configuration $^{0}T_{V_i}(q)$. Note that $\mathit{dX_{p_i}} =\, ^{0}T_{m_i}(t) - \, ^{0}T_{V_i}(q)$ and ${dX_{r_i}} = \mathbf{u} \cdot \alpha$, where the angle $\alpha$ and the unit vector \textbf{u} are obtained computing $\,^{0}R^T_{V_i}(q) \,^{0}R_{m_i}(t)$.
-Successively, the joints configuration $q$ is optimized to minimize the error.
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 
-Consequently, the frames virtually attached to the humanoid robot limbs are computed as function of the joints trajectory. Let be $q_0$ and $t_o$ respectively the initial configuration of the robot and the initial instant of time, each Virtual Marker is computed with respect to the relative limbs $i$ ( e.g. Elbow-Forearm, Knee-Shin, Ankle-Foot)as follows:
-\begin{equation}
-^{0}T_{V_i}(q) = \, ^{0}T_{j}(q_i{_0}) \, \cdot \, ^{j}T_{V_i}
-\label{eq:Virtual-Marker-Definition}
-\end{equation}
-where $^{j}T_{V_i}$ is the relation matrix between the robot joint $j$ and the relative Virtual Marker. Since humanoid system is a rigid body, the relation matrix is considered constant. Each Virtual Marker $V_i$ is uni-vocally related with one joint $j_i$.
- 
-However, the equation \eqref{eq:minimizationReal-Virtual-Marker} compares the Real Markers on the actor and the Virtual Markers on the robot. Therefore, it is necessary to find a relation between the two systems in order to solve the discrepancies between human actor and robot imitator: 1) different body dimension, 2) different mobility, 3) non-rigid body motion.
+\section{State of the art}
+focussed on the problem at hand -- that is, locomotion
+- Cf work from Vandi Verma @ CMU (application of particle fitering)
+- (mention Iagnema's work ? hardly applicable to our case)
 
-\subsection{Human Movements Analysis}
-In the first part of our work we analyze the actor movements data, exploiting the functionality of our motion capture system ART that provides information also relative to the actor joints. Considering the same left kicks at three different velocities (slow, medium and fast), we observe the distance variation between two articulation frames relative to the same appendage (e.g. Elbow and Wrist) and the offset between the human joint and the marker on the relative limb $^{j_{i}}P_{V_{i}}$. In all the cases the length of each body part is almost constant (variation less than $1\%$ of total length); nevertheless the distance between the Real Marker and the actor joint frame varies from $15\%$ up to $30\%$ of total length as shown in Figure \ref{fig:distVariation}.
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+\section{Problem statement}
+what are the issues ? Why is it difficult ?
+
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. of total length as shown in Figure \ref{fig:distVariation}.
 \begin{figure}[b]
 		\includegraphics[width=\linewidth]{Figures/distVariation.eps} 
 		\caption{Variation of the distance between real markers on the left leg of human actor.}
 		\label{fig:distVariation}
 \end{figure}
-The skin-artifact problem can be reduced equipping as better as possible the actor but it is not physically possible to avoid it completely. Since the noise of the system is in the vicinity of 1-2 mm., it does not influence considerably the results. Ude at al. propose in \cite{Ude2000,Ude2004} to consider an initial configuration for defining the local frames with respect to a global body coordinate system. Taking the cue from their work, we instructed the actor to perform the movements starting from double support in upright position with arms and legs full extended. This configuration is the initial configuration and it is presented as \textit{Zero Body Configuration}.
-Thereby we decide to acquire N samples (with $1000 < N < 5000$) of the actor in Zero Body Configuration without motion: the length of each limb is then computed considering the mean value. 
 
-Once defined the body part dimensions, we decide to approximate the actor movements as a rigid body motion and the hypothesis done for the Equation \eqref{eq:Virtual-Marker-Definition} can be considered.
-The problem of different body size and mobility can be solved adapting the robot kinematics with the human dimensions.
-Some authors as Martin Do \cite{Do2008} propose the Master
-Motor Map interface for mapping the human movements to the human-like motion on the humanoid, preserving the features of the original performance.
-Our method tries to introduce an easier way for the motion conversion. Basically, the idea consists to apply the body dimensions of the human to the kinematics model of the humanoid robot. In our work we implement this method in the humanoid robot NAO which presents physical characteristics completely different than any actor.
-Analyzing Figure \ref{fig:scalingprocess}, it is possible to observe the MATLAB representation of the human model using the information provided by ART-Human software and the model of humanoid NAO in normal and scaled-up version.
-One of the problems engaged during the development of the motion conversion algorithm was to define a relation between the humanoid robot NAO reference frame and the motion capture system.
-%\begin{figure}[t]
-%		\includegraphics[width=\linewidth]{Figures/scalingprocess} 
-%		\caption{Actor and NAO robot in Zero Body Configuration. In the right the robot kinematics adapted to the real actor size is represented.}
-%		\label{fig:scalingprocess}
-%\end{figure}
+\section{Overview of the approach}
+why did you chose it ? (ideally, because is copes tiwh the difficulties stated above)
 
-The criteria in Equation \eqref{eq:minimizationReal-Virtual-Marker} considers the two information expressed with respect to the same reference frame.
-Nevertheless, the Real Markers are expressed in the MoCap frame as function of $t$ and the Virtual Markers are expressed in the zero frame of robot NAO as function of $q$.
-Therefore, it is necessary to find a relation between the two reference frames such that:
-\begin{equation}
-\sum^{T}_{t=0} \, \sum^{M}_{i=1} \, || \, ^{0_{MoCap}}T_{m_i}(t) \, - \, ^{0_{MoCap}}T_{0_{NAO}} \, \cdot \, ^{0_{NAO}}T_{V_i}(q) \, ||_2
-\label{eq:minimization-DifferentWorldFrame}
-\end{equation}
-The relation matrix $^{0_{MoCap}}T_{0_{NAO}}$ could be obtained by optimization using the Equation \eqref{eq:minimization-DifferentWorldFrame}. The human joint could be extracted using only the information of Real Markers, transforming the relative position and orientation to an appropriate sequence of Euler angles \cite{Shoemake1994}. However since the human kinematics is very complicated and model the articulation as revolute joint is an approximation, we decide to consider only the geometric aspect of the motion. 
-Our work tries to simplify also this aspect, looking for a very easy solution applicable and relevant for different platforms: simplicity and adaptability are the key points of our method.
+(2, 3 and 4 can be swapped, or even mixed)
 
-\subsection{Relation between MoCap and Humanoid Robot system}
-Once obtained the human motion it is necessary to transfer it to the robot system. However, only geometric aspects are considered and it is necessary to define a geometric relation between the two systems so that the joints trajectory can be extracted by optimization.
-In different related works the authors present the method to convert the human motion without going in the details, we will try to do it.
-Basically, the idea is to find a solution that can be adaptable to different robots and easy to understand and apply.
-In order to find a good relation between a humanoid robot and a human actor, it is necessary to observe and analyze the two systems and detect the common points.
-Certainly since humanoid robots have human-like shape, any of these aspects can be associated to find a relation but usually the most common point is the presence of a torso frame.
-The torso frame will be one of the basic concept in the first part of our work. We define it such that: torso XY plane is parallel to transverse plane, where the y-axis is along the line passing through the shoulders and x-axis is forward directed. 
-Once defined the torso frame in the robot, it is necessary to define the torso frame on the actor. Considering the information provided by ART DTrack2 software, we use the orientation of the frame attached to the back when the actor is in Zero Configuration such that the XY plane of the back-marker is parallel to the body: one axis is in direction of the line passing through the shoulders and the other one along the gravity vector.
-The human torso frame position is defined computing the middle point in 3D coordinates between the local frame on the back and the one on the hip/belt.
-Thus it is only necessary a rotation to find a relation in the world frame and only a translation to match the position.
-The results obtained is shown in Figure \ref{fig:TorsoFrame}.
-%\begin{figure}[t]
-%		\includegraphics[width=0.75\linewidth]{Figures/TorsoFrame} 
-%		\caption{Robot Scaled-up and Human Torso Frame.}
-%		\label{fig:TorsoFrame}
-%\end{figure}
-Following this method we define the relation matrix $^{0_{MoCap}}T_{0_{NAO}}$ and the result is a scaled-up robot virtually equipped with the Real Markers.
 
-\subsection{Minimization Step-by-Step and B-splines}
-Then Equation \eqref{eq:minimization-DifferentWorldFrame} can be used to find the joint trajectory of the scaled-up robot such that the motion performed will be the same than original one.
-Earlier we introduced the Virtual Markers definition in the Equation \eqref{eq:Virtual-Marker-Definition}, without extending the element $^{j}T_{V_i}$ that corresponds to the relation between the robot joint frames and the Virtual Marker.
-Previously, it was not possible to extend the equation because the relation between the two systems was unknown.
-Once defined a relation between human and robot system, it is necessary to determine the Virtual Markers location in the robot limbs. In order to obtain an accurate starting configuration for the motion conversion, we assume that in the first instant of time in which the actor is in Zero Body Configuration, the Virtual Markers position and orientation are equal to the Real Markers such that:
-\begin{equation}
-^{0_{MoCap}}T_{m_i}(t_0) \, = \, ^{0_{NAO}}T_{0_{MoCap}} \, \cdot \,  ^{0_{MoCap}}T_{V_i}(q_0)
-\end{equation}
-Successively, the relation $^{j}T_{V_i}$ is easily computed as:
-\begin{equation}
-^jT_{V_i}(q_0) \, = \, ^jT_{0_{MoCap}}(q_0) \, \cdot \, ^{0_{MoCap}}T_{m_i}(t_0)
-\end{equation}
-The Equation \eqref{eq:minimizationReal-Virtual-Marker} can be completely extended such that:
-\begin{equation}
-\begin{split}
-\sum^{T}_{t=0} \, \sum^{M}_{i=1} \, || \; ^{0_{MoCap}}T_{m_i}(t) \, - \, ^{0_{MoCap}}T_{0_{NAO}}\, \cdot \, ^{0_{NAO}}T_{j}(q) \, \cdot \\ \, ^jT_{0_{MoCap}}(q_0) \, \cdot \, ^{0_{MoCap}}T_{m_i}(t_0) ||_2
-\end{split}
-\label{eq:extension-minimizationReal-Virtual-Marker}
-\end{equation}
-where $q_0$ and $t_0$ are the initial configuration respectively of the robot and the actor in Zero Body Configuration. The transformation matrices $^{0_{MoCap}}T_{m_i}(t_0)$ and $^jT_{0_{MoCap}}(q_0)$ are computed using the mean value of N samples in which the actor is in Zero Body Configuration.
 
-The method considered has been denominated as \textit{Minimization Step-by-Step} in which for each configuration the optimal solution is computed starting from the previous one.
-Consequently the joints velocity is not continuous and it is necessary to smooth it.
-The first idea was to re-define the objective function optimizing K points that interpolated provide the best solution. 
-Let be $q_j$ the trajectory of the joint $j$, obtained by the cubic interpolation of K points $q_{i_K}$, the objective function of the optimization problem can be defined as:
-\begin{equation}
-\sum^{t_{F_n}}_{t = t_{0_n}} \, \sum^M_{i = 1} \, || \, ^{0_{MoCap}}T_{m_i}(t) \, - \, ^{0_{MoCap}}T_{V_i}(q_i) \, ||
-\end{equation}
-with:
-\begin{equation}
-q_i = spline(\,q_{i_K}, [ t_{0_n}, t_{F_n} ], T)
-\end{equation}
-where $M$ is the number of the markers, $q_i$ is the trajectory of the joint $i^{ \, th}$ computed with the set of K points $q_{i_K}$, $T$ is the whole motion time, $t_{0_n}$ and $t_{F_n}$ are the initial and final instant of interval time $n^{ \, th}$.
-The following method has been nominated as \textit{Minimization using B-splines} but unfortunately it requires too much time for being debugged even dividing the whole time motion in different parts solved independently. The computational time is mainly induced by the several constraints needed as joints limits respected by each point after interpolation and the research of the optimal number of points K that must be interpolated. The huge time required led us to not test and debug the approach properly.
-Therefore, the final idea is to re-defined our conversion approach: once obtained the joints trajectory using the minimization Step-by-Step, the non-continuous joints evolution are interpolated with B-splines considering a set of K points easily detectable.
-In this way, we obtain joints trajectory which present second derivative continuous.
-As results of different tests, in the next section the outcome relative to the minimization Step-by-Step since it presents better results.
-\section{Results and Revision}
-The optimization problem described by the objective function in Equation \eqref{eq:extension-minimizationReal-Virtual-Marker} has been solved using the MATLAB function \textit{fmincon} provided by the Optimization Toolbox 2012b. At initial configuration, the error is equal to zero and grows according to the complexity of the motion: during the left kick motion the maximum error arisen when the left leg is completely forward extended. 
-The inaccuracy of the results is caused by the approximations earlier presented. Basically, the main inaccuracy is provoked by the non-rigid motion of the human actor that can not be avoided. Nevertheless, we do not exclude that a better formulation of the problem may be done, allowing to improve the mathematical results.
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-The goodness of the motion converted from Human to the robot is checked by observation.
-Considering the left kick motion starting and ending in double support, the results obtained by the minimization Step-by-Step and successively interpolation with B-Splines is shown in Figure \ref{fig:imitationClip}.
-In order to check the reliability of the results in joint space, we compare the joints evolution of a left kick motion imitation computed and a common trajectory of the robot NAO offline defined using the Aldebaran software Choreographe. 
-In the results obtained, the motion imitated by the small humanoid robot NAO reproduces fidelity the real movements performed by the human actor.
-However, the motion is not balanced and some differences must be taken in consideration: the huge dimensions of the NAO feet wreaks collision between the robot and the ground during the phase in which the floating foot is parallel to the one in support.
-The problem can be solved adding some constraints in the optimization problem or easier in geometric way.
-Then we solved the problem in two easy steps: in the first one the  trajectory of the hip, knee and ankle joints of moving leg are slightly modified to avoid collision considering the toe as extreme point of the flying foot. 
-\begin{equation}
-\sum^{T}_{t=0} \sum^J_{j=1} \, || \, q_i^c(t) \, - \, q_i^{nc}(t) \, ||_2
-\label{eq: collision-foot-ground}
-\end{equation}
-subject to:
-\begin{equation}
-P_{z_{Toe}} > \kappa
-\label{eq: collision-foot-ground-constraints}
-\end{equation}
-where $q_i^c$ is the trajectory with collision and $q_i^{nc}$ is the decision variable, J is the set of joints relative to the non-support leg, $P_{z_{Toe}}$ is the height of the floating toe and $\kappa$ is an arbitrary threshold $ > 0$. 
+\section{Detailed presentation (how you did it)}
+hat are the data you have?
 
-Another interesting constraint that could help for avoiding the ground collision but also for improve the stability of the robot is to set the feet flat when they are close to the ground. Since it is assumed that right foot is always in support, only the position of the left foot is analyzed during the movements in order to set the ankle joints value such that the sole is parallel to the 
-floor. Once applied the optimization algorithm described
-in Equation \eqref{eq: collision-foot-ground}, the trajectory of the left toe is analyzed and the foot is detected near to the ground when its position with respect to the ground is less than a threshold (around 18mm).
-The flat foot condition is reduced to a geometric problem. The position of the Knee Joint Frame and the Ankle Joint Frame can be extracted by the joints configuration and they can be easily defined respectively as the point A and B in Figure \ref{fig:footFlat}. Since the sole have to be parallel to the ground, it is necessary to split the problem in two parts, considering independently the Sagittal and the Coronal plane. Therefore, the goal is to find the angle $\sigma$ which corresponds to the blue ones in the Figure \ref{fig:footFlat}.
+Many TODOs here:
+- Ground truth: how to obtain it? What are the issues with the way we assess it?
+- What faults? either binary, or identified faults (name them) TODO: what are
+the faults we have with Mana?
+- Compare with "naive Bayes", "Markov field approach"
+
+
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+\section{Results}
+
+(can also be interleaved in section 5)
+TODO: provide the results, anaylyse them
+
+\section{Conclusions / Discussions}
+ 
+ What is good with our approach? What if bad? How can we alleviate the bad things? What would be the future work, either on the problem at hand, or more globally building upon the presented work (namely, go towards locomotion "control")
  
 %\begin{figure}[t]
 %	\centering
