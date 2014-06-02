@@ -22,9 +22,9 @@
 \author{Nemanja Raki\'{c}evi\'{c}, Alexandre Ravet, Simon Lacroix \\
 \tt\small \{nrakicev,aravet,slacroix\}@laas.fr
 \thanks{This work was supported by RIS Lab blabla}% <-this % stops a space
-\thanks{christian.vassallo@laas.fr, K. Munirathinam, S. Sakka and C. Chevallereau are with IRCCyN, Nantes, France
-        {\tt\small karthick.munirathinam@irccryn.ec-nantes.fr sophie.sakka@irccryn.ec-nantes.fr christine.chevallereau@irccryn.ec-nantes.fr}}%
-\thanks{Sophie Sakka is also with University of Poitiers, France}%
+%\thanks{christian.vassallo@laas.fr, K. Munirathinam, S. Sakka and C. Chevallereau are with IRCCyN, Nantes, France
+        %{\tt\small karthick.munirathinam@irccryn.ec-nantes.fr sophie.sakka@irccryn.ec-nantes.fr christine.chevallereau@irccryn.ec-nantes.fr}}%
+%\thanks{Sophie Sakka is also with University of Poitiers, France}%
 }
 
 \begin{document}
@@ -36,74 +36,127 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-To write.
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\par
+One of the backbones of every mission which requires high reliability, is the ability of the system to autonomously detect the state it is in and foresee/anticipate any possible problematic situation which might occur. This information is essential in order to adjust the control accordingly. This paper addresses the issue of detecting the possible locomotion state based on the information from on-board sensors, such as wheel velocities, torques, IMU signals, control signals and GPS. We propose the use of Conditional Random Fields (CRFs) 
+which exploit the sequential structure of the sensor data and the correlations between different readings. This approach is then compared to the Hidden Markov Model approach and the Naive Bayes Model, and analysed to show its advantages. \par
 \end{abstract}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
-To write.
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. \par
+When addressing the issue of fault diagnosis
+The importance can be seen in the example of the Opportunity rover experience...
+
+\par
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Context / motivations}
 
-what is the problem (could be made short here), and why it is interesting to solve it?
+\begin{itshape}what is the problem (could be made short here), and why it is interesting to solve it?
+\end{itshape}
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+Rover is sent to a foreign planet.. Very expensive project.. Reliability is essential.
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{State of the art}
-focussed on the problem at hand -- that is, locomotion
+\begin{itshape}focussed on the problem at hand -- that is, locomotion
 - Cf work from Vandi Verma @ CMU (application of particle fitering)
 - (mention Iagnema's work ? hardly applicable to our case)
+\end{itshape}
 
+Most of the research in locomotion diagnosis was done using the Particle Filter methods.
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The approach we are using, with Continuous Conditional Random Fields, has been already implemented for data extraction in continuous streams of sequential data [Baltrusaitis2013]...
 
+Other approaches are based on estimating the wheel-ground interaction.. This is computationally expensive since the models are complex..
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Problem statement}
-what are the issues ? Why is it difficult ?
+\begin{itshape}what are the issues ? Why is it difficult ?
+\end{itshape}
 
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. of total length as shown in Figure \ref{fig:distVariation}.
-\begin{figure}[b]
-		\includegraphics[width=\linewidth]{Figures/distVariation.eps} 
-		\caption{Variation of the distance between real markers on the left leg of human actor.}
-		\label{fig:distVariation}
-\end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Overview of the approach}
-why did you chose it ? (ideally, because is copes tiwh the difficulties stated above)
+\begin{itshape}why did you chose it ? (ideally, because is copes with the difficulties stated above)
 
 (2, 3 and 4 can be swapped, or even mixed)
+\end{itshape}
 
+The rover used is a segway..
 
+The inputs used are data from the 3 sensors, IMU, POM, (GPS) which give the wheel speeds, torques and commands (20Hz) and IMU gives acceleration, magnetometer and gyro (@50Hz)
+This data forms the input features..
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Detailed presentation (how you did it)}
-hat are the data you have?
+\begin{itshape}What is the data you have?
 
 Many TODOs here:
 - Ground truth: how to obtain it? What are the issues with the way we assess it?
 - What faults? either binary, or identified faults (name them) TODO: what are
 the faults we have with Mana?
 - Compare with "naive Bayes", "Markov field approach"
+\end{itshape}
 
+To obtain the relevant data for the parameters to be estimated, we needed to cover all the possible states in the datasets. 
+Due to the specific construction of the rover and the terrain it is assumed to traverse, there can be a finite number of situations in which the rover can find it self. These scenarios are defined by the operator.
+Intrinsic to the rover and environment at hand, it was decided to use 15 distinct labels:
+\begin{itemize}
+	\item "Nominal" locomotion
+		\begin{itemize}
+			\item Traversing on concrete
+			\item Traversing on grass
+			\item Traversing on large pebbles
+			\item Rover inclined
+			\item Climbing (curb)
+			\item Descending (from curb)
+			\item Mixed terrain
+		\end{itemize}
+		
+	\item Problematic locomotion
+		\begin{itemize}
+			\item Slipping/sliding/stuck on concrete
+			\item Skipping/jumping while rotating on concrete
+			\item Slipping/sliding/stuck on grass
+			\item Skipping/jumping while rotating on grass
+			\item Bump/Shock
+			\item Skipping/jumping while rotating on pebbles
+		\end{itemize}
+\end{itemize}
 
+The "nominal" locomotion situations are used to depict the properties of the terrain, in order to give enough information so that the system can apply appropriate control to optimize the traversal.
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The problematic locomotion scenarios are essential for predicting potential locomotion failures which are critical for mission success.
 
+To properly label the sensor data, robot locomotion was observed carefully, however, the final labelling was done manually, based on operator's definition of each specific locomotion state.
+
+The sensor data is given at the frequency of 20 Hz for the torques, velocities, commands, and at 50 Hz for the IMU data. The feeds are then processed and aligned to give the appropriate and uniform stream of data with a unique timestamp. 
+
+\subsection{Features}
+The features that are used are...
+
+\subsection{CRF}
+
+The graph structure representing the CRF model is shown in Fig XX...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
 
-(can also be interleaved in section 5)
-TODO: provide the results, anaylyse them
+\begin{itshape}(can also be interleaved in section 5)
+TODO: provide the results, analyse them
+\end{itshape}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusions / Discussions}
  
- What is good with our approach? What if bad? How can we alleviate the bad things? What would be the future work, either on the problem at hand, or more globally building upon the presented work (namely, go towards locomotion "control")
+\begin{itshape}What is good with our approach? What if bad? How can we alleviate the bad things? What would be the future work, either on the problem at hand, or more globally building upon the presented work (namely, go towards locomotion "control")
+\end{itshape}
  
 %\begin{figure}[t]
 %	\centering
